@@ -1,14 +1,45 @@
-# MERNa server including a template for Node.js and Express hosted on Microsoft Azure
-MERNa stands for MongoDB, Express, React, abd Node on Azure. 
+# Dice Roller - Server
 
-This repository serves as a template that can be used as a template to create a Node.js and Express based website hosted 
-on Microsoft Azure.
+Azure Function App that provides random dice rolling service via HTTP API.
 
-Azure hosting notes:
-Select Node 18 LTS
+## Author
+Salavuddin Shaik  
+Lewis University  
+Software Architecture and Design  
+CPSC-61200-003
 
-To execute locally:
-git clone [[your-repository-url]]
-cd [[your-repository-url]]
-npm install express
-npm start
+## AI Usage
+This project was developed with assistance from Claude AI (Anthropic) for:
+- Understanding Azure Function App deployment and configuration
+- Implementing HTTP-triggered serverless function in Node.js
+- Configuring CORS for cross-origin client requests
+- Troubleshooting Azure Function App authentication and CORS policies
+- Setting up proper response headers for API communication
+
+## Description
+This is the server-side component of a distributed dice roller system. The Azure Function:
+- Accepts HTTP GET requests
+- Generates random numbers between 1 and 6
+- Returns plain text response
+- Implements CORS to allow browser-based client requests
+
+## Technologies
+- Node.js
+- Azure Function App
+- HTTP Trigger
+- CORS Headers
+
+## Architecture
+Service-Oriented Architecture (SOA) implementation:
+- **Server**: Azure Function App (this repository)
+- **Client**: Web interface hosted on Azure Static Website
+
+## API Endpoint
+```
+GET https://dicerollerserver-dba2cjhhdbfhb5en.northcentralus-01.azurewebsites.net/api/roll-dice
+```
+
+Response: Plain text number (1-6)
+
+## Client Repository
+https://github.com/SalavuddinShaik/DiceRoller
