@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page - Dice Roller Server</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background: #0078d4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            background: #005a9e;
+        }
+
+        #results {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🎲 Dice Roller API Test Page</h1>
+    <p>This page tests the RESTful API endpoint for the Dice Roller server.</p>
+
+    <h2>API Endpoint:</h2>
+    <p><code>https://dicerollerserver-dba2cjhhdbfhb5en.northcentralus-01.azurewebsites.net/api/roll-dice</code></p>
+
+    <h2>Tests:</h2>
+    <button onclick="testAPI()">Test API (Single Roll)</button>
+    <button onclick="testMultiple()">Test Multiple Rolls</button>
+    <button onclick="testCORS()">Test CORS Headers</button>
+
+    <div id="results"></div>
+
+    <script>
+        const API_URL = 'https://dicerollerserver-dba2cjhhdbfhb5en.northcentralus-01.azurewebsites.net/api/roll-dice';
+
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'success' ? 'green' : type === 'error' ? 'red' : 'black';
+            results.innerHTML += `<p style="color: ${color}">[${timestamp}] ${message}</p>`;
+        }
+
+        async function testAPI() {
+            log('Testing single API call...');
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.text();
+                log(`✓ Success! API returned: ${data}`, 'success');
+                log(`Response status: ${response.status}`);
+            } catch (error) {
+                log(`✗ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testMultiple() {
+            log('Testing 5 consecutive API calls...');
+            for (let i = 1; i <= 5; i++) {
+                try {
+                    const response = await fetch(API_URL);
+                    const data = await response.text();
+                    log(`Roll ${i}: ${data}`, 'success');
+                } catch (error) {
+                    log(`Roll ${i} failed: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function testCORS() {
+            log('Testing CORS headers...');
+            try {
+                const response = await fetch(API_URL);
+                const corsHeader = response.headers.get('Access-Control-Allow-Origin');
+                if (corsHeader) {
+                    log(`✓ CORS header present: ${corsHeader}`, 'success');
+                } else {
+                    log('✗ CORS header missing!', 'error');
+                }
+            } catch (error) {
+                log(`✗ CORS test failed: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+
+</html>
